@@ -6,11 +6,24 @@ class PostDTO {
     address: string;
     message: string;
 }
-// https://youtu.be/BXTEwuoDkDQ?si=GnDSqefCrRQgPbVv&t=3133
 // https://www.youtube.com/watch?v=xzu3QXwo1BU
 
 @Controller("/user")
 export class UserController {
+    // COOKIE
+
+    /* get cookie */
+    @Get('/get-cookie')
+    getCookie(@Req() request: Request): string {
+        return request.cookies['name'];
+    }
+
+    /* set cookie */
+    @Get('/set-cookie')
+    setCookie(@Query('name') name: string, @Res() response: Response) {
+        response.cookie('name', name);
+        response.status(200).send('cookies was set');
+    }
 
     // asynchronous method
     @Get('/async-simple-res')
