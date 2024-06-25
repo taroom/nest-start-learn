@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Header, HttpCode, HttpRedirectResponse, Ip, Param, Patch, Post, Put, Query, Redirect, Req, Res } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Request, Response, response } from 'express';
 
 class PostDTO {
     name: string;
@@ -10,27 +10,48 @@ class PostDTO {
 
 @Controller("/user")
 export class UserController {
+    /* Use Views HTML
+    url : /user/view/hello?name=agussutarom
+    */
+    @Get('/view/hello')
+    viewHello(@Query('name') name: string, @Res() response: Response) {
+        response.render('index.html', {
+            title: 'Nest with HTML Render View',
+            name: name
+        });
+    }
+
     // COOKIE
 
-    /* get cookie */
+    /* get cookie
+    url: /user/get-cookie
+    */
     @Get('/get-cookie')
     getCookie(@Req() request: Request): string {
         return request.cookies['name'];
     }
 
-    /* set cookie */
+    /* set cookie
+    url: /user/set-cookie
+    */
     @Get('/set-cookie')
     setCookie(@Query('name') name: string, @Res() response: Response) {
         response.cookie('name', name);
         response.status(200).send('cookies was set');
     }
 
-    // asynchronous method
+
+    /* asynchronous method
+    url: /user/async-simple-res
+    */
     @Get('/async-simple-res')
     async asyncSayHello(): Promise<string> {
         return 'Hallo Kawan saya menggunakan async';
     }
 
+    /* redirecting
+    url: /user/redirect
+    */
     @Get('/redirect')
     @Redirect()
     redirecting(): HttpRedirectResponse {
@@ -40,6 +61,9 @@ export class UserController {
         };
     }
 
+    /* recommended response for nest
+    url: /user/simple-res-recom
+    */
     @Get('/simple-res-recom')
     @Header("Content-Type", "application/json")
     @HttpCode(200)
@@ -49,6 +73,9 @@ export class UserController {
         }
     }
 
+    /* not recommend response for nest, it use express Response
+    url: /user/async-simple-res
+    */
     // NOT RECOMMENDED
     @Get('/simple-res')
     simpleResponse(@Res() response: Response) {
