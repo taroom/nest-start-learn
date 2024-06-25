@@ -21,4 +21,16 @@ describe('AppController (e2e)', () => {
       .expect(200)
       .expect('Hello World!');
   });
+
+  it('should check user say hello', async () => {
+    const result = await request(app.getHttpServer())
+      .get('/user/get-recommended-multi-query')
+      .query({
+        id: 2,
+        address: 'Jombang'
+      });
+
+    expect(result.status).toBe(200);
+    expect(result.text).toBe('Recommended Nest with ID getter Multi Query ID 2 with Address: Jombang');
+  });
 });
