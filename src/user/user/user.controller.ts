@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Header, HttpCode, HttpRedirectResponse, Inject, Ip, Param, Patch, Post, Put, Query, Redirect, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, HttpCode, HttpRedirectResponse, Inject, Ip, Optional, Param, Patch, Post, Put, Query, Redirect, Req, Res } from '@nestjs/common';
 import { Request, Response, response } from 'express';
 import { UserService } from './user.service';
 
@@ -12,8 +12,9 @@ class PostDTO {
 @Controller("/user")
 export class UserController {
     // bisa menggunakan property inject
-    // @Inject()
-    // private userService: UserService;
+    @Inject()
+    @Optional()
+    private userService: UserService;
     // bisa menggunakan constructor juga
     constructor(private service: UserService) { }
     /* asynchronous method
