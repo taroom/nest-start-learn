@@ -23,12 +23,14 @@ export class UserController {
         private service: UserService,
         private connection: Connection,
         private mailService: MailService,
+        @Inject('EmailService') private emailService: MailService,
         private userRepository: UserRepository
     ) { }
 
     @Get('/connection')
     async sayConnection(): Promise<string> {
         this.mailService.send();
+        this.emailService.send();
         this.userRepository.save();
         return this.connection.getName();
     }
