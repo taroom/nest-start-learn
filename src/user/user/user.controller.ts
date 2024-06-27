@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Header, HttpCode, HttpRedirectResponse, 
 import { Request, Response, response } from 'express';
 import { UserService } from './user.service';
 import { Connection } from '../connection/connection';
+import { MailService, mailService } from '../mail/mail.service';
 
 class PostDTO {
     name: string;
@@ -19,11 +20,13 @@ export class UserController {
     // bisa menggunakan constructor juga
     constructor(
         private service: UserService,
-        private connection: Connection
+        private connection: Connection,
+        private mailService: MailService
     ) { }
 
     @Get('/connection')
     async sayConnection(): Promise<string> {
+        this.mailService.send();
         return this.connection.getName();
     }
 
