@@ -3,6 +3,7 @@ import { Request, Response, response } from 'express';
 import { UserService } from './user.service';
 import { Connection } from '../connection/connection';
 import { MailService, mailService } from '../mail/mail.service';
+import { UserRepository } from '../user-repository/user-repository';
 
 class PostDTO {
     name: string;
@@ -21,12 +22,14 @@ export class UserController {
     constructor(
         private service: UserService,
         private connection: Connection,
-        private mailService: MailService
+        private mailService: MailService,
+        private userRepository: UserRepository
     ) { }
 
     @Get('/connection')
     async sayConnection(): Promise<string> {
         this.mailService.send();
+        this.userRepository.save();
         return this.connection.getName();
     }
 
