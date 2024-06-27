@@ -4,6 +4,7 @@ import { UserService } from './user.service';
 import { Connection } from '../connection/connection';
 import { MailService, mailService } from '../mail/mail.service';
 import { UserRepository } from '../user-repository/user-repository';
+import { MemberService } from '../member/member.service';
 
 class PostDTO {
     name: string;
@@ -24,7 +25,8 @@ export class UserController {
         private connection: Connection,
         private mailService: MailService,
         @Inject('EmailService') private emailService: MailService,
-        private userRepository: UserRepository
+        private userRepository: UserRepository,
+        private memberService: MemberService
     ) { }
 
     @Get('/connection')
@@ -32,6 +34,10 @@ export class UserController {
         this.mailService.send();
         this.emailService.send();
         this.userRepository.save();
+
+        console.info(this.memberService.getConnectionName());
+        this.memberService.sendEmail();
+
         return this.connection.getName();
     }
 
