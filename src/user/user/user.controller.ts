@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Header, HttpCode, HttpRedirectResponse, Inject, Ip, Optional, Param, Patch, Post, Put, Query, Redirect, Req, Res } from '@nestjs/common';
 import { Request, Response, response } from 'express';
 import { UserService } from './user.service';
+import { Connection } from '../connection/connection';
 
 class PostDTO {
     name: string;
@@ -16,9 +17,19 @@ export class UserController {
     @Optional()
     private userService: UserService;
     // bisa menggunakan constructor juga
-    constructor(private service: UserService) { }
+    constructor(
+        private service: UserService,
+        private connection: Connection
+    ) { }
+
+    @Get('/connection')
+    async sayConnection(): Promise<string> {
+        return this.connection.getName();
+    }
+
+
     /* asynchronous method
-    url: /user/async-simple-res
+    url: /user/say-hello
     */
     @Get('/say-hello')
     async asyncSayHelloBro(@Query('name') name: string): Promise<string> {
