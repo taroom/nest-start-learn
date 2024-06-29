@@ -5,6 +5,7 @@ import { Connection } from '../connection/connection';
 import { MailService, mailService } from '../mail/mail.service';
 import { UserRepository } from '../user-repository/user-repository';
 import { MemberService } from '../member/member.service';
+import { User } from '@prisma/client';
 
 class PostDTO {
     name: string;
@@ -33,7 +34,6 @@ export class UserController {
     async sayConnection(): Promise<string> {
         this.mailService.send();
         this.emailService.send();
-        this.userRepository.save();
 
         console.info(this.memberService.getConnectionName());
         this.memberService.sendEmail();
@@ -41,6 +41,13 @@ export class UserController {
         return this.connection.getName();
     }
 
+    @Get('/create')
+    async create(
+        @Query('firstName') firstName: string,
+        @Query('lastName') lastName: string
+    ): Promise<User> {
+        return this.userRepository.save(firstName, lastName);
+    }
 
     /* asynchronous method
     url: /user/say-hello
