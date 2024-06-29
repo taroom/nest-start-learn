@@ -28,7 +28,9 @@ import { ConfigService } from '@nestjs/config';
       useFactory: createUserRepository,
       inject: [Connection]// karena createUserRepository butuh connection
     },
-    MemberService]
+    MemberService
+  ],
+  exports: [UserService],
   // service harus diregistrasikan disini jika tidak dia tidak akan terpanggil walau sudah kita buat
 })
 export class UserModule { }
