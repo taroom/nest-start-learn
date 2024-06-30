@@ -60,7 +60,7 @@ export class UserController {
     url: /user/say-hello
     */
     @Get('/say-hello')
-    @UseFilters(ValidationFilter)
+    // @UseFilters(ValidationFilter)
     async asyncSayHelloBro(@Query('name') name: string): Promise<string> {
         return this.service.sayHello(name);
     }
