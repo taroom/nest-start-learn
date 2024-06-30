@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Header, HttpCode, HttpRedirectResponse, Inject, Ip, Optional, Param, Patch, Post, Put, Query, Redirect, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, HttpCode, HttpRedirectResponse, Inject, Ip, Optional, Param, Patch, Post, Put, Query, Redirect, Req, Res, UseFilters } from '@nestjs/common';
 import { Request, Response, response } from 'express';
 import { UserService } from './user.service';
 import { Connection } from '../connection/connection';
@@ -6,6 +6,7 @@ import { MailService, mailService } from '../mail/mail.service';
 import { UserRepository } from '../user-repository/user-repository';
 import { MemberService } from '../member/member.service';
 import { User } from '@prisma/client';
+import { ValidationFilter } from 'src/validation/validation.filter';
 
 class PostDTO {
     name: string;
@@ -53,6 +54,7 @@ export class UserController {
     url: /user/say-hello
     */
     @Get('/say-hello')
+    @UseFilters(ValidationFilter)
     async asyncSayHelloBro(@Query('name') name: string): Promise<string> {
         return this.service.sayHello(name);
     }
