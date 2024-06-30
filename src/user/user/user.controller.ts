@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Header, HttpCode, HttpRedirectResponse, Inject, Ip, Optional, Param, Patch, Post, Put, Query, Redirect, Req, Res, UseFilters } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, HttpCode, HttpException, HttpRedirectResponse, Inject, Ip, Optional, Param, Patch, Post, Put, Query, Redirect, Req, Res, UseFilters } from '@nestjs/common';
 import { Request, Response, response } from 'express';
 import { UserService } from './user.service';
 import { Connection } from '../connection/connection';
@@ -47,6 +47,12 @@ export class UserController {
         @Query('firstName') firstName: string,
         @Query('lastName') lastName: string
     ): Promise<User> {
+        if (!firstName) {
+            throw new HttpException({
+                code: 400,
+                errors: "First name is required"
+            }, 400);
+        }
         return this.userRepository.save(firstName, lastName);
     }
 
